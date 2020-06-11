@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AuthComponent } from './auth.component';
 
 const appRoutes = [
-  { path: 'auth', component: AuthComponent }
+  { path: '', component: AuthComponent }
 ];
 
 @NgModule({
