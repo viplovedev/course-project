@@ -4,6 +4,7 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
 import { AlertComponent } from './alert/alert.component';
 import { PlaceholderDirective } from './placeholder.directive';
 import { DropdownDirective } from './dropdown.directive';
+import { LoggingService } from '../logging.service';
 
 
 

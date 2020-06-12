@@ -8,6 +8,7 @@ import { CoreModule } from './core/core.module';
 import { HeaderComponent } from './header/header.component';
 import { AlertComponent } from './shared/alert/alert.component';
 import { SharedModule } from './shared/shared.module';
+import { LoggingService } from './logging.service';
 
 
 @NgModule({
@@ -23,9 +24,10 @@ import { SharedModule } from './shared/shared.module';
     CoreModule
   ],
   providers: [
-      AuthGuard
+      AuthGuard,
+      LoggingService
   ],
   bootstrap: [AppComponent],
-  entryComponents:[AlertComponent]
+  entryComponents:[AlertComponent],
 })
 export class AppModule {}
