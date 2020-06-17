@@ -6,6 +6,8 @@ import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 import { User } from './user.model';
+import { Login, Logout } from './store/auth.actions';
+import { Store } from '@ngrx/store';
 
 export interface AuthResponseData {
   kind: string;
@@ -19,10 +21,13 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  user = new BehaviorSubject<User>(null);
+  //user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private store: Store) { }
 
   signup(email: string, password: string) {
     return this.http
@@ -89,7 +94,8 @@ export class AuthService {
     );
 
     if (loadedUser.token) {
-      this.user.next(loadedUser);//authState
+      this.store.dispatch(new Login(loadedUser));
+      //this.user.next(loadedUser);//authState
       const expirationDuration =
         new Date(userData._tokenExpirationDate).getTime() -
         new Date().getTime();
@@ -98,7 +104,8 @@ export class AuthService {
   }
 
   logout() {
-    this.user.next(null);//authState
+    this.store.dispatch(new Logout());
+    //this.user.next(null);//authState
     this.router.navigate(['/auth']);
     localStorage.removeItem('userData');
     if (this.tokenExpirationTimer) {
@@ -121,7 +128,8 @@ export class AuthService {
   ) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
-    this.user.next(user); //authState
+    this.store.dispatch(new Login(user));
+    //this.user.next(user); //authState
     this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
   }
