@@ -2,18 +2,20 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
-
 import { AuthInterceptorService } from '../auth/auth-interceptor.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { RecipeService } from '../recipes/recipe.service';
-import { shoppingListReducer } from '../shopping-list/store/shopping-list.reducer';
 import { appReducer } from './../store/app.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from '../auth/store/auth.effects';
+
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forRoot(appReducer)
+    StoreModule.forRoot(appReducer),
+    EffectsModule.forRoot([AuthEffects])
   ],
   providers: [
     RecipeService,
