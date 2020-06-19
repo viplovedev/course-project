@@ -8,6 +8,8 @@ import { environment } from 'src/environments/environment';
 import { throwError, of } from 'rxjs';
 import { User } from '../user.model';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducer';
 
 @Injectable()
 export class AuthEffects {
@@ -59,11 +61,42 @@ export class AuthEffects {
         this.router.navigate(['/']);
         })
     );
+    
+    @Effect({dispatch: false})
+    writeLocalStorage = this.actions$.pipe(
+        ofType(LOGIN_SUCCESS),
+        
+        /*,
+        tap(() => {
+            this.store.select('auth').subscribe(
+                authState => {
+                    localStorage.setItem('userData', JSON.stringify(authState.user));
+                }
+            )
+        })*/
+    ).subscribe(
+       action => {
+        localStorage.setItem('userData', JSON.stringify(action.payload.user));
+       } 
+    )
+
+    @Effect({dispatch: false})
+    setUpAutoLogout = this.actions$.pipe(
+        ofType(LOGIN_SUCCESS),
+        tap(() => {
+            this.store.select('auth').subscribe(
+                authState => {
+                    localStorage.setItem('userData', JSON.stringify(authState.user));
+                }
+            )
+        })
+    )
 
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private router:Router
+        private router:Router,
+        private store:Store<AppState>
     ) { }
 
     private handleAuthentication(resData: AuthResponseData) {

@@ -85,5 +85,4 @@ export class AuthComponent implements OnInit, OnDestroy {
     if(this.storeSub)
       this.storeSub.unsubscribe();
   }
-  
 }
